@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="/static/images/logo.png">
+    <title>ODEsolver</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #2c3e50, #34495e);
+            color: #fff;
+        }
+
+        header {
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 48px;
+            color: #3498db;
+        }
+
+        .hamburger-btn {
+            color: #fff;
+            border: none;
+            background: none;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: fixed;
+            top: 80px;
+            right: 0;
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #3498db;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        section {
+            padding: 50px 20px;
+            margin: 100px 20px 20px;
+            background: linear-gradient(to bottom, #2c3e50, #34495e);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        #about {
+            text-align: center;
+        }
+
+        #team {
+            text-align: center;
+        }
+
+        .team-carousel {
+            margin-top: 20px;
+        }
+
+        .team-member {
+            text-align: center;
+            max-width: 300px;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .team-member img {
+            border-radius: 50%;
+            width: 250px; 
+            height: 330px; 
+            object-fit: cover; 
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member-details {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .team-member h3,
+        .team-member p {
+            margin: 0;
+            font-size: 20px; 
+        }
+
+        .team-member:hover {
+            transform: scale(1.1);
+        }
+
+        nav {
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            padding: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #3498db;
+        }
+
+        button {
+            padding: 15px 30px;
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #3498db;
+        }
+
+        footer {
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #problemSolving,
+        #engineeringProblems {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .method-buttons button,
+        .example-buttons button {
+    margin: 10px;
+    padding: 15px 30px;
+    background: linear-gradient(to right, #677985, #587994); 
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s ease;
+    width: 100%;
+        }
+
+        .method-buttons button:hover,
+        .example-buttons button:hover {
+    background: #71a2d0; 
+        }
+
+        @media screen and (min-width: 768px) {
+    .method-buttons button,
+    .example-buttons button {
+        width: auto; 
+    }
+    }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ODEsolver</h1>
+        <div class="dropdown">
+            <button class="hamburger-btn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('euler') }}" target="_blank">Eulers' Method</a>
+                <a href="{{ url_for('heun') }}" target="_blank">Heuns' Method</a>
+                <a href="{{ url_for('rk') }}" target="_blank">RK Method</a>
+                <a href="{{ url_for('material_engineering') }}" target="_blank">Material Engineering</a>
+                <a href="{{ url_for('mechanical_engineering') }}" target="_blank">Mechanical Engineering</a>
+                <a href="{{ url_for('chemical_kinetics') }}" target="_blank">Chemical Kinetics</a>
+                <a href="{{ url_for('electrical_engineering') }}" target="_blank">Electrical Engineering</a>
+            </div>
+        </div>
+    </header>
+    
+    <section id="about">
+    <h2 style="color: #3498db;">About ODEsolver</h2>
+    <p>Assalamu Alaikum. We have created a web-based project, that solves ODE (Ordinary Differential Equations), by three methods<br>
+    They are, <br>
+    1. Eulers' Method <br>2. Heuns' Method, and <br>3. 4th Order Runge-Kutta Method.
+    <br>We also tried to integrate them on real-life engineering problems. <br>
+    Which are, <br>
+    1. Material Science & Engineering (MSE) <br>
+    2. Mechanical Engineering (ME) <br>
+    3. Chemical Engineering (ChE) <br>
+    4. Electrical and Electronics Engineering (EEE)</p>
+    <section id="problemSolving">
+        <h2 style="color: #fff;">Basic Problem Solving</h2>
+        <div class="method-buttons">
+            <a href="{{ url_for('euler') }}" target="_blank"><button>Eulers' Method</button></a>
+            <a href="{{ url_for('heun') }}" target="_blank"><button>Heuns' Method</button></a>
+            <a href="{{ url_for('rk') }}" target="_blank"><button>4th order Runge-Kutta Method</button></a>
+        </div>
+    </section>
+
+    <section id="engineeringProblems">
+        <h2 style="color: #fff;">Engineering Problem Examples</h2>
+        <div class="example-buttons">
+            <a href="{{ url_for('material_engineering') }}" target="_blank"><button>Material Engineering</button></a>
+            <a href="{{ url_for('mechanical_engineering') }}" target="_blank"><button>Mechanical Engineering</button></a>
+            <a href="{{ url_for('chemical_kinetics') }}" target="_blank"><button>Chemical Kinetics</button></a>
+            <a href="{{ url_for('electrical_engineering') }}" target="_blank"><button>Electrical Engineering</button></a>
+        </div>
+    </section>
+    </section>
+
+    <section id="team">
+        <h2 style="color: #fff;">Meet the Team</h2>
+        <div id="teamCarousel" class="carousel slide team-carousel" data-ride="carousel">
+            <div class="carousel-inner">
+
+                <!-- Team Member 1 -->
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="team-member">
+                                <img src="/static/images/team/38.jpg" alt="Team Member 1" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="team-member-details">
+                                <h3>1. Maisha Alam</h3>
+                                <p>ID: C201238</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="team-member">
+                                <img src="/static/images/team/14.jpg" alt="Team Member 2" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="team-member-details">
+                                <h3>2. Sadia Binte Amir</h3>
+                                <p>ID: C201214</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="team-member">
+                                <img src="/static/images/team/33.jpg" alt="Team Member 3" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="team-member-details">
+                                <h3>3. Sadia Elias</h3>
+                                <p>ID: C201233</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="team-member">
+                                <img src="/static/images/team/07.jpg" alt="Team Member 4" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="team-member-details">
+                                <h3>4. Tahsin Huda</h3>
+                                <p>ID: C201207</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 5 -->
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="team-member">
+                                <img src="/static/images/team/06.jpg" alt="Team Member 5" class="img-fluid">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="team-member-details">
+                                <h3>5. Asma Akhter</h3>
+                                <p>ID: C201206</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <a class="carousel-control-prev" href="#teamCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#teamCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </section>
+
+    <section id="contact" style="background: linear-gradient(to bottom, #2c3e50, #34495e); color: #fff;">
+        <h2>Contact Us</h2>
+        Maisha Alam <br>
+        ID:C201238 <br>
+        Section: 7AF <br>
+    </section>
+
+    <footer>
+        <p>All Rights Reserved © 2023 ODEsolver</p>
+    </footer>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

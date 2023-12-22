@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="/static/images/logo.png">
+    <title>Problem solving - Heuns' Method</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #2c3e50, #34495e);
+            color: #fff;
+        }
+
+        header {
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 48px;
+            color: #3498db;
+        }
+
+        .hamburger-btn {
+            color: #fff;
+            border: none;
+            background: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: fixed;
+            top: 80px;
+            right: 0;
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #3498db;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        section {
+            padding: 20px;
+            margin: 150px 20px 20px;
+            background: linear-gradient(to bottom, #2c3e50, #34495e);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .content p {
+        font-size: 20px;
+        }
+
+        footer {
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #3498db;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #results {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #2980b9;
+        }
+        form {
+        margin-top: 20px;
+        background: linear-gradient(to bottom, #485c6f, #34495e);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #fff;
+        font-size: 20px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: none;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+
+    input:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    button {
+        background-color: #fff;
+        color: #34495e;
+        padding: 15px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #3498db;
+        color: #fff;
+        transform: scale(1.05);
+    }
+
+        #solution-curve {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        #results-headline,
+        #solution-curve-headline {
+            font-size: 22px;
+            font-weight: bold;
+            font-style: italic;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ODEsolver</h1>
+        <div class="dropdown">
+            <button class="hamburger-btn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('euler') }}" target="_blank">Eulers' Method</a>
+                <a href="{{ url_for('heun') }}">Heuns' Method</a>
+                <a href="{{ url_for('rk') }}" target="_blank">RK Method</a>
+                <a href="{{ url_for('material_engineering') }}" target="_blank">Material Engineering</a>
+                <a href="{{ url_for('mechanical_engineering') }}" target="_blank">Mechanical Engineering</a>
+                <a href="{{ url_for('chemical_kinetics') }}" target="_blank">Chemical Kinetics</a>
+                <a href="{{ url_for('electrical_engineering') }}" target="_blank">Electrical Engineering</a>
+            </div>
+        </div>
+    </header>
+
+    <section>
+
+        <div class="content">
+            <h2 style="color: #3498db;">Heuns' Method for Problem Solving</h2>
+            <p></p>
+
+            <!-- Update the form action to point to the Heuns' Method route -->
+            <form id="HeunForm" action="{{ url_for('heun') }}" method="post">
+                <label for="expression">Enter the function in terms of x and y:</label>
+                <input type="text" id="expression" name="expression" required>
+
+                <label for="x0">Enter initial x:</label>
+                <input type="number" id="x0" name="x0" required>
+
+                <label for="y0">Enter initial y:</label>
+                <input type="number" id="y0" name="y0" required>
+
+                <label for="h">Enter step size, h:</label>
+                <input type="text" id="h" name="h" required>
+
+                <label for="target_x">Enter target x value:</label>
+                <input type="text" id="target_x" name="target_x" required>
+
+                <!-- Change the button type to submit -->
+                <button type="submit">Run Heuns' Method</button>
+            </form>
+
+            <!-- Display results from Flask -->
+            <div id="results">
+                {% if results %}
+                    <p id="results-headline">Results:</p>
+                    <!-- Display results here, adjust based on what you want to show -->
+                    <p>Initial conditions: x0 = {{ results['x0'] }}, y0 = {{ results['y0'] }}</p>
+                    <p>Target x: {{ results['target_x'] }}</p>
+                    <p>Step size (h): {{ results['h'] }}</p>
+            
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>x</th>
+                                <th>y</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x, y in results['tabulated_results'] %}
+                                <tr>
+                                    <!-- Format x and y values with three decimal points -->
+                                    <td>{{ x|round(3) }}</td>
+                                    <td>{{ y|round(3) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            
+                    <br><br><div id="solution-curve-headline">Here comes the solution curve of "y' = {{ results['expression'] }}"</div>
+            
+                    <!-- Add the matplotlib image -->
+                    <img src="{{ results['plot_path'] }}" alt="Solution Curve using Heuns' Method">
+            
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        Maisha Alam <br>
+        ID:C201238 <br>
+        Section: 7AF <br>
+    </section>
+
+    <footer>
+        <p>All Rights Reserved © 2023 ODEsolver</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="/static/images/logo.png">
+    <title>Engineering Problem - ChemicalKinetics</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #2c3e50, #34495e);
+            color: #fff;
+        }
+
+        header {
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 48px;
+            color: #3498db;
+        }
+
+        .hamburger-btn {
+            color: #fff;
+            border: none;
+            background: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: fixed;
+            top: 80px;
+            right: 0;
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #3498db;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        section {
+            padding: 20px;
+            margin: 150px 20px 20px;
+            background: linear-gradient(to bottom, #2c3e50, #34495e);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        form {
+            margin-top: 20px;
+            background: linear-gradient(to bottom, #485c6f, #34495e);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        input:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        button {
+            background-color: #fff;
+            color: #34495e;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3498db;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        #results {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(to right, #34495e, #2c3e50);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        #results-headline {
+            font-size: 22px;
+            font-weight: bold;
+            font-style: italic;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        #results img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ODEsolver</h1>
+        <div class="dropdown">
+            <button class="hamburger-btn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('euler') }}" target="_blank">Eulers' Method</a>
+                <a href="{{ url_for('heun') }}" target="_blank">Heuns' Method</a>
+                <a href="{{ url_for('rk') }}" target="_blank">RK Method</a>
+                <a href="{{ url_for('material_engineering') }}" target="_blank">Material Engineering</a>
+                <a href="{{ url_for('mechanical_engineering') }}" target="_blank">Mechanical Engineering</a>
+                <a href="{{ url_for('chemical_kinetics') }}">Chemical Kinetics</a>
+                <a href="{{ url_for('electrical_engineering') }}" target="_blank">Electrical Engineering</a>
+
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <div class="content">
+            <h2 style="color: #3498db;">Chemical Kinetics</h2>
+            <p></p>
+
+            <!-- Update the form action to point to the Chemical Kinetics route -->
+            <form id="ChemForm" action="{{ url_for('chemical_kinetics') }}" method="post">
+                <label for="A0">Initial Concentration (A0):</label>
+                <input type="text" id="A0" name="A0" required>
+
+                <label for="k">Rate Constant (k):</label>
+                <input type="text" id="k" name="k" required>
+
+                <label for="t_end_chem">End Time (t_end):</label>
+                <input type="text" id="t_end_chem" name="t_end_chem" required>
+
+                <label for="dt_chem">Time Step (dt):</label>
+                <input type="text" id="dt_chem" name="dt_chem" required>
+
+                <!-- Change the button type to submit -->
+                <button type="submit">Compute chemical kinetics</button>
+            </form>
+
+            <!-- Display results from Flask -->
+            <div id="results">
+                {% if results and results['plot_path'] %}
+                    <p id="results-headline">Results:</p>
+                    {% if results.final_answer %}
+                        <p>{{ results.final_answer }}</p>
+                    {% endif %}
+                    <br><p>Graphical comparison among the solutions: </p>
+                    <img src="{{ results['plot_path'] }}" alt="Plot 1">
+                    {% if results['error_plot_path'] %}
+                        <br><p>Error Estimation:</p>
+                        <img src="{{ results['error_plot_path'] }}" alt="Error Plot">
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        Maisha Alam <br>
+        ID:C201238 <br>
+        Section: 7AF <br>
+    </section>
+
+    <footer>
+        <p>All Rights Reserved © 2023 ODEsolver</p>
+    </footer>
+</body>
+
+</html>
